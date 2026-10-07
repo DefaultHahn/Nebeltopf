@@ -1,8 +1,8 @@
-# Nebeltopf v5 – Druck- und Bauanleitung
+# Nebeltopf v6 – Druck- und Bauanleitung
 
 Facettierter Fogponik-Topf für 10 Pflanzen, gebaut für den Bambu Lab H2D.
 Alles ist parametrisch in `nebeltopf.scad` (OpenSCAD). Keine Schrauben, kein TPU, keine Gewindeeinsätze.
-Ausführliche Beschreibung mit Schnittmodell und Designentscheidungen: `Nebeltopf_v5_Dokumentation.pdf`.
+Ausführliche Beschreibung mit Schnittmodell und Designentscheidungen: `Nebeltopf_v6_Dokumentation.pdf`.
 
 ## Maße
 
@@ -10,7 +10,7 @@ Ausführliche Beschreibung mit Schnittmodell und Designentscheidungen: `Nebeltop
 |---|---|
 | Gesamthöhe | 383,5 mm (Sockel 200 + Kuppel 183,5) |
 | Grundfläche | 280 × 284 mm (Sechseck 280 über Ecken, plus Ausbuchtung an einer Ecke) |
-| Wasser | Tank Ø 219 mm + Wasserkammer: bis MAX (130 mm) ca. 5,2 l, bis MIN (40 mm) ca. 1,6 l |
+| Wasser | Sechseck-Tank (Wand 3 mm) + Wasserkammer: bis MAX (130 mm) ca. 6,6 l, bis MIN (40 mm) ca. 2,0 l |
 | Pflanzplätze | 6 unten (15° nach oben), 3 Mitte (43°), 1 oben (senkrecht) |
 | Netztopf | 2"-Maß, oben Ø 52, unten Ø 42, 50 mm tief, Rand Ø 60 |
 | Öffnungen | Wasserkammer an der Ecke mit Deckel (Nachfüllen, Anzeiger), Kabelstutzen Innen-Ø 10 auf einer anderen Seite |
@@ -48,7 +48,9 @@ Wasserstandsanzeiger für Hydrokultur, 19 cm (dickste Stelle bis Ø 19, Rohr ca.
 
 Material überall PETG. Für alles, was Wasser hält: **Wandschleifen 8** (die Wände werden damit komplett
 aus Umfangslinien gedruckt) und **Boden/Deckel 4 mm massiv** (bei 0,2 mm Schichthöhe 20 Schichten).
-Bauteillüfter eher niedrig (30–50 %), das verbessert die Lagenhaftung.
+Bauteillüfter niedrig (10–30 %), das verbessert die Lagenhaftung.
+Fertige Profile für Bambu Studio liegen im Ordner `druckprofile` (Datei › Importieren › Konfigurationen importieren):
+`Nebeltopf_Sockel_wasserdicht.json` (Prozess) und `SUNLU_PETG_Nebeltopf_H2D.json` (Filament).
 
 **Kuppel** (zwei Farben, passt in den Zwei-Düsen-Bauraum)
 - `kuppel_haupt.stl` und `kuppel_farbe2.stl` gleichzeitig importieren, „als ein Objekt mit mehreren Teilen“
@@ -56,12 +58,12 @@ Bauteillüfter eher niedrig (30–50 %), das verbessert die Lagenhaftung.
 - Stützen: **Baum (automatisch), „Nur auf Druckplatte“, Schwellenwinkel 30°**.
   Gestützt wird nur die Unterseite der Spitze; alles andere ist mit 45° oder als Brücke druckbar.
 
-**Sockel:** ohne Stützen. Die Decken der Eckfächer werden überbrückt.
+**Sockel:** ohne Stützen. Der Übergang vom Sechseck zum runden Kragen ist eine 45°-Schräge, die Decke des Hohlrings darüber wird überbrückt.
 Nach dem Druck einen Tag mit Wasser bis MAX stehen lassen, bevor die Technik rein kommt.
 
 **Sieb, Netztöpfe, Kappen, Kammerdeckel, Podest, Prüfblock:** ohne Stützen.
 
-Filament (Wände massiv gerechnet): Kuppel ca. 0,8 kg, Sockel ca. 1,7 kg, 10 Töpfe ca. 0,18 kg, Rest ca. 0,15 kg.
+Filament (Wände massiv gerechnet): Kuppel ca. 0,8 kg, Sockel ca. 1,3 kg, 10 Töpfe ca. 0,18 kg, Rest ca. 0,15 kg.
 
 ## Zusammenbau
 
@@ -72,7 +74,7 @@ Filament (Wände massiv gerechnet): Kuppel ca. 0,8 kg, Sockel ca. 1,7 kg, 10 Tö
    Kammerdeckel darüber in den Falz legen.
 3. Sieb mit dem Griff nach oben auf die Auflage legen.
 4. Kuppel aufsetzen (siehe unten), Netztöpfe einsetzen.
-5. Wasser über die Wasserkammer einfüllen, höchstens 5,2 l (MAX).
+5. Wasser über die Wasserkammer einfüllen, höchstens 6,6 l (MAX).
 
 ## Kuppel auf den Sockel setzen
 
@@ -91,12 +93,12 @@ verschüttetes Wasser und Schmutz bleiben nicht liegen.
 
 | Wasser über Boden | Füllmenge |
 |---|---|
-| 40 mm (MIN) | 1,6 l |
-| 70 mm | 2,8 l |
-| 100 mm | 4,0 l |
-| 130 mm (MAX) | 5,2 l |
+| 40 mm (MIN) | 2,0 l |
+| 70 mm | 3,6 l |
+| 100 mm | 5,1 l |
+| 130 mm (MAX) | 6,6 l |
 
-Pro Zentimeter sind es ca. 0,40 l. Hydrokultur-Anzeiger haben meist keine Skala für so tiefe Tanks: einmal mit dem
+Pro Zentimeter sind es ca. 0,51 l. Hydrokultur-Anzeiger haben meist keine Skala für so tiefe Tanks: einmal mit dem
 Messbecher bis MIN füllen und merken, was der Anzeiger zeigt. Passt es nicht, das Podest mit anderem `PODEST_H`
 neu drucken (Standard 25 mm, damit das Sichtfenster eines 19-cm-Anzeigers über dem Deckel liegt).
 

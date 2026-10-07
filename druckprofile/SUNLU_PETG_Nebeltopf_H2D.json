@@ -1,0 +1,40 @@
+{
+    "fan_max_speed": [
+        "30"
+    ],
+    "fan_min_speed": [
+        "10"
+    ],
+    "filament_max_volumetric_speed": [
+        "14"
+    ],
+    "filament_settings_id": [
+        "SUNLU PETG Nebeltopf @BBL H2D"
+    ],
+    "filament_vendor": [
+        "SUNLU"
+    ],
+    "from": "User",
+    "hot_plate_temp": [
+        "70"
+    ],
+    "hot_plate_temp_initial_layer": [
+        "70"
+    ],
+    "inherits": "Generic PETG @BBL H2D",
+    "is_custom_defined": "0",
+    "name": "SUNLU PETG Nebeltopf @BBL H2D",
+    "nozzle_temperature": [
+        "250"
+    ],
+    "nozzle_temperature_initial_layer": [
+        "250"
+    ],
+    "textured_plate_temp": [
+        "70"
+    ],
+    "textured_plate_temp_initial_layer": [
+        "70"
+    ],
+    "version": "02.00.00.00"
+}

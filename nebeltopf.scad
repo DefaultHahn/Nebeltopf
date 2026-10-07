@@ -1,5 +1,5 @@
 /*  ===================================================================
-    NEBELTOPF  v5  –  facettierter Fogponik-Pflanzentopf für Bambu Lab H2D
+    NEBELTOPF  v6  –  facettierter Fogponik-Pflanzentopf für Bambu Lab H2D
     -------------------------------------------------------------------
     SO BEDIENST DU DIE DATEI
       1. Fenster > Customizer öffnen (rechts).
@@ -95,9 +95,11 @@ DREHWEG    = 20;
 
 /* [Experten: Sockel innen] */
 BODEN      = 4;
-WAND_AUSSEN = 2.0;
-TANK_RI    = 109.5;    // Tank/Kragen innen (Ø 219)
-TANK_WAND  = 3.2;
+WAND_AUSSEN = 3.0;     // Sechseckwand = Tankwand
+ECK_RUND   = 10;       // Innenecken des Tanks gerundet (leicht auszuwischen)
+TANK_RI    = 109.5;    // Kragen und Siebauflage innen (Ø 219)
+RUND_WAND  = 2.0;      // kurze runde Wand unter dem Kragen
+UEBERGANG_T = 2.5;     // 45°-Schräge vom Sechseck zum runden Kragen
 KRAGEN_RA  = 114.5;    // Kragen außen (Kragen 5 mm dick)
 KRAGEN_H   = 20;
 LAND       = 3.7;
@@ -305,7 +307,7 @@ ANSCHLUESSE = [[SEITE_KABEL, Z_KABEL]];
 // Die Oberseite fällt um DACH_NEIGUNG nach außen ab. Die Kammer ist nur unten (unter MIN) mit
 // dem Tank verbunden: kommunizierende Röhren, gleicher Wasserstand, aber kein Nebel nach außen.
 KAMMER_WAND  = 3.2;    // Außenwand der Kammer (hält Wasser)
-KAMMER_TRENN = 1.2;    // plus Sechseckwand 2,0 -> Trennwand 3,2 mm zu den Eckfächern
+KAMMER_TRENN = 1.2;    // Abstand Kammer <-> Sechseckwand (Falz für den Deckel); Trennwand zum Tank 4,2 mm
 DECKEL_T = 3;  DECKEL_FALZ = 1.6;  DECKEL_SPIEL = 0.3;
 function eckpunkt(az, r=R0) = [r*cos(az), r*sin(az)];
 P_ANZ = eckpunkt(ECKE_ANZ, R_ANZEIGER);                  // Achse des Anzeigers
@@ -335,10 +337,9 @@ module kammer_hohl() {
     }
 }
 module in_flaeche(az) { rotate(az-90) children(); }    // lokal: x tangential, y nach außen
-module durchlass() in_flaeche(ECKE_ANZ)               // Verbindung Kammer <-> Tank quer durch die Ecke, Spitzdach 45°
+module durchlass() in_flaeche(ECKE_ANZ)               // Verbindung Kammer <-> Tank durch die Ecke, Spitzdach 45°
     translate([0, R0+KAMMER_TRENN+3, Z_BODEN]) rotate([90,0,0])
         linear_extrude(R0+KAMMER_TRENN+3-(TANK_RI-2)) polygon([[-10,0],[10,0],[10,6],[0,16],[-10,6]]);
-module durchlass_voll() in_flaeche(ECKE_ANZ) translate([-14, TANK_RI, Z_BODEN-1]) cube([28, R0-TANK_RI, 22]);
 module podest_ring() translate([P_ANZ[0], P_ANZ[1], Z_BODEN-EPS])          // hält das Podest mittig
     difference() { cylinder(d=34, h=1.5+EPS); translate([0,0,-1]) cylinder(d=30.8, h=4); }
 
@@ -359,6 +360,29 @@ module rastnocken() {
         translate([0,0,NASE_ZU-1.5]) linear_extrude(NASE_ZO+1.2-(NASE_ZU-1.5))
             polygon([[KRAGEN_RA-NASE_TIEFE-0.05, -1.6], [KRAGEN_RA-NASE_TIEFE+1.2, 0], [KRAGEN_RA-NASE_TIEFE-0.05, 1.6]]);
 }
+// --- Tank: Sechseck mit gerundeten Innenecken, oben 45°-Übergang auf den runden Kragen ---
+Z_UE = Z_SIEB - 6;     // Unterkante der runden Wand; darunter weitet sich der Tank mit 45° auf das Sechseck
+module tank_innen_2d() offset(r=ECK_RUND) offset(delta=-ECK_RUND) sechseck2d(A0-WAND_AUSSEN);
+// alles unter einem 45°-Kegel, der bei r = TANK_RI auf Höhe Z_UE + dz liegt
+module unter_kegel(dz=0) translate([0,0,Z_UE+TANK_RI+dz-300]) cylinder(r1=300, r2=0, h=300, $fn=FN_GROSS);
+module tank_hohl() {
+    translate([0,0,Z_BODEN]) cylinder(r=TANK_RI, h=SOCKEL_H+KRAGEN_H, $fn=FN_GROSS);
+    intersection() {
+        translate([0,0,Z_BODEN]) linear_extrude(SOCKEL_H) tank_innen_2d();
+        unter_kegel();
+    }
+}
+// geschlossener, trockener Hohlring zwischen 45°-Schräge, runder Wand und Schulter (spart Material)
+module hohlring() {
+    difference() {
+        intersection() {
+            translate([0,0,Z_BODEN]) linear_extrude(-6-Z_BODEN) tank_innen_2d();
+            difference() { translate([0,0,Z_BODEN]) cylinder(r=200, h=-6-Z_BODEN); unter_kegel(UEBERGANG_T*sqrt(2)); }
+        }
+        translate([0,0,-SOCKEL_H]) cylinder(r=TANK_RI+RUND_WAND, h=SOCKEL_H, $fn=FN_GROSS);
+        for (a=ANSCHLUESSE) stutzen_achse(a[0], a[1]) stutzen_innen_voll();
+    }
+}
 module sockel_rumpf() {
     difference() {
         union() {
@@ -367,17 +391,10 @@ module sockel_rumpf() {
             for (a=ANSCHLUESSE) stutzen_achse(a[0], a[1]) stutzen_voll();
             bucht_voll();
         }
-        translate([0,0,Z_BODEN]) cylinder(r=TANK_RI, h=SOCKEL_H+KRAGEN_H, $fn=FN_GROSS);
+        tank_hohl();
+        hohlring();
         kammer_hohl();
         durchlass();
-        // geschlossene, trockene Eckfächer (sparen Material)
-        difference() {
-            translate([0,0,Z_BODEN]) sechseck(R0-WAND_AUSSEN/cos(30), SOCKEL_H-BODEN-6);
-            translate([0,0,-SOCKEL_H]) cylinder(r=TANK_RI+TANK_WAND, h=SOCKEL_H, $fn=FN_GROSS);
-            for (k=[0:5]) rotate(30+60*k) translate([TANK_RI, -4, -SOCKEL_H]) cube([25, 8, SOCKEL_H]);
-            for (a=ANSCHLUESSE) stutzen_achse(a[0], a[1]) stutzen_innen_voll();
-            durchlass_voll();
-        }
         // Rinne: Kondenswasser läuft zum Kragenfuß und durch Schlitze in den Tank
         difference() {
             hull() {

@@ -15,7 +15,7 @@ an einer Ecke des Sockels, dort steht auch ein handelsüblicher Wasserstandsanze
 | | |
 |---|---|
 | Pflanzplätze | 10 für 2"-Netztöpfe: 6 unten (15°), 3 Mitte (43°), 1 oben |
-| Wasser | 5,2 l bis MAX, 1,6 l bis MIN, ca. 0,40 l pro Zentimeter |
+| Wasser | 6,6 l bis MAX, 2,0 l bis MIN, ca. 0,51 l pro Zentimeter |
 | Höhe | 383,5 mm (Sockel 200 + Kuppel 183,5) |
 | Grundfläche | 280 × 284 mm |
 | Material | PETG, Kuppel zweifarbig in einem Druck |
@@ -27,14 +27,15 @@ an einer Ecke des Sockels, dort steht auch ein handelsüblicher Wasserstandsanze
 | [`nebeltopf.scad`](nebeltopf.scad) | parametrisches OpenSCAD-Modell aller Teile |
 | [`stl/`](stl) | alle Teile als STL, schon in Druckrichtung |
 | [`ANLEITUNG.md`](ANLEITUNG.md) | Druckeinstellungen, Zusammenbau, Betrieb |
-| [`Nebeltopf_v5_Dokumentation.pdf`](Nebeltopf_v5_Dokumentation.pdf) | Konstruktionsbeschreibung mit Schnittmodell, Designentscheidungen und Prüfung |
+| [`Nebeltopf_v6_Dokumentation.pdf`](Nebeltopf_v6_Dokumentation.pdf) | Konstruktionsbeschreibung mit Schnittmodell, Designentscheidungen und Prüfung |
+| [`druckprofile/`](druckprofile) | Prozess- und Filamentprofil für Bambu Studio (Sockel wasserdicht, SUNLU PETG auf dem H2D) |
 | [`bilder/`](bilder) | Renderings und Schnitte |
 
 ## Schnell loslegen
 
 1. `pruefblock.stl` und einen `netztopf.stl` drucken und testen, ob der Topf sauber einrastet.
    Zu stramm oder zu locker: `SPIEL` in der .scad anpassen.
-2. `sockel.stl` drucken (ohne Stützen) und einen Tag mit Wasser bis MAX stehen lassen.
+2. `sockel.stl` drucken (ohne Stützen, am besten mit den Profilen aus `druckprofile/`) und einen Tag mit Wasser bis MAX stehen lassen.
 3. Kuppel (`kuppel_haupt.stl` + `kuppel_farbe2.stl` als ein Objekt), Sieb, Töpfe und Kleinteile drucken.
 
 Alles Weitere steht in der [Anleitung](ANLEITUNG.md).
